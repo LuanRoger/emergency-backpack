@@ -1,7 +1,7 @@
-use crate::knapsack::{Item, Knapsack};
+use crate::backpack::{Item, Backpack};
 use crate::table::init_table;
 
-pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Knapsack {
+pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
     let rows = items.len();
     let columns = capacity as usize;
 
@@ -41,7 +41,7 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Knapsack {
     }
 
     // Retrocede pela tabela para encontrar quais itens foram selecionados
-    let mut knapsack = Knapsack::new(capacity);
+    let mut knapsack = Backpack::new(capacity);
     let mut row = rows; // Começa no último item
     let mut col = columns; // Começa na capacidade total
 

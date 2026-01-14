@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "emergency-knapsack"
+name = "emergency-backpack"
 version = "0.1.0"

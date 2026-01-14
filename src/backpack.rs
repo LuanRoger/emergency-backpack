@@ -6,14 +6,14 @@ pub struct Item {
     pub value: u16,
 }
 
-pub struct Knapsack {
+pub struct Backpack {
     pub items: Vec<Item>,
     pub capacity: u16,
 }
 
-impl Knapsack {
+impl Backpack {
     pub fn new(capacity: u16) -> Self {
-        Knapsack {
+        Backpack {
             items: Vec::new(),
             capacity,
         }
@@ -36,7 +36,7 @@ impl Knapsack {
     }
 }
 
-impl Display for Knapsack {
+impl Display for Backpack {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let items_display: String = self
             .items

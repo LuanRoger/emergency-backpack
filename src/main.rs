@@ -1,10 +1,4 @@
-use std::vec;
-
-use crate::{algorithms::dynamic_programming, knapsack::Item};
-
-mod algorithms;
-mod knapsack;
-mod table;
+use emergency_backpack::{algorithms::dynamic_programming, backpack::Item};
 
 const BACKPACK_CAPACITY: u16 = 6;
 
