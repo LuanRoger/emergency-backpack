@@ -38,12 +38,18 @@ impl Knapsack {
 
 impl Display for Knapsack {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let items_display: String = self
+            .items
+            .iter()
+            .fold(String::new(), |agg, value| agg + &value.name + ", ");
+
         write!(
             f,
-            "(Peso: {}; Valor: {}) -> CAP: {}",
+            "(Peso: {}; Valor: {}; CAP: {}) -> {}",
             self.total_weight(),
             self.total_value(),
-            self.capacity
+            self.capacity,
+            items_display
         )
     }
 }
