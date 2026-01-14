@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 pub struct Item {
+    pub name: String,
     pub weight: u16,
     pub value: u16,
 }
@@ -48,18 +49,21 @@ impl Display for Knapsack {
 }
 
 impl Item {
-    pub fn new(weight: u16, value: u16) -> Self {
-        Item { weight, value }
+    pub fn new(name: String, weight: u16, value: u16) -> Self {
+        Item {
+            name,
+            weight,
+            value,
+        }
     }
 }
 
 impl Clone for Item {
     fn clone(&self) -> Self {
         Self {
+            name: self.name.clone(),
             weight: self.weight.clone(),
             value: self.value.clone(),
         }
     }
 }
-
-impl Copy for Item {}
