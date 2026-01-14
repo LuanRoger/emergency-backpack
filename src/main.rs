@@ -4,12 +4,18 @@ use crate::{algorithms::dynamic_programming, knapsack::Item};
 
 mod algorithms;
 mod knapsack;
-mod matrix;
+mod table;
 
 const BACKPACK_CAPACITY: u16 = 6;
 
 fn main() {
-    let items = vec![Item::new(2, 3), Item::new(3, 4), Item::new(4, 5)];
+    let items = vec![
+        Item::new(String::from("Caderno"), 3, 2),
+        Item::new(String::from("Livro"), 4, 3),
+        Item::new(String::from("Caneca"), 5, 4),
+        Item::new(String::from("Caneta"), 1, 1),
+        Item::new(String::from("Garrafa"), 2, 2),
+    ];
 
     let backpack = dynamic_programming(&items, BACKPACK_CAPACITY);
     println!("{}", backpack);
