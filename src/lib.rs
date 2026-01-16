@@ -1,4 +1,7 @@
 pub mod algorithms;
 pub mod backpack;
+pub mod cli;
 pub mod table;
-pub mod ui;
+mod ui;
+
+pub use ui::app;

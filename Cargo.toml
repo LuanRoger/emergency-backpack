@@ -8,6 +8,7 @@ criterion = { version = "0.8.1", features = ["html_reports"] }
 crossterm = "0.29.0"
 color-eyre = "0.6.3"
 ratatui = "0.30.0"
+clap = { version = "4.5.54", features = ["derive"] }
 
 [[bench]]
 name = "benchmark"
