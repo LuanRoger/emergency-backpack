@@ -3,18 +3,23 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Style},
     text::Span,
-    widgets::{Block, Borders, Padding, Row, Table as TableUi},
+    widgets::{Block, Borders, List, ListDirection, ListItem, Padding, Row, Table as TableUi},
 };
 
-use crate::table::Table;
+use crate::backpack::Backpack;
 
-pub fn render_table(frame: &mut Frame, table: &Table) {
+pub fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
     let outer_layout = Layout::default()
         .direction(Direction::Vertical)
         .margin(0)
-        .constraints([Constraint::Percentage(98), Constraint::Fill(1)])
+        .constraints([
+            Constraint::Fill(3),
+            Constraint::Fill(2),
+            Constraint::Length(1),
+        ])
         .split(frame.area());
 
+    let table = &backpack.table;
     let num_columns = table.first().map(|row| row.len()).unwrap_or(0);
     let num_rows = table.len();
 
@@ -34,6 +39,7 @@ pub fn render_table(frame: &mut Frame, table: &Table) {
         .bottom_margin(1);
 
     let block = Block::default()
+        .title("Tabela")
         .borders(Borders::ALL)
         .padding(Padding::uniform(1));
 
@@ -44,6 +50,24 @@ pub fn render_table(frame: &mut Frame, table: &Table) {
         .style(Style::default().fg(Color::White));
 
     frame.render_widget(table_widget, outer_layout[0]);
+
+    let items = backpack
+        .items
+        .iter()
+        .map(|item| {
+            ListItem::new(format!(
+                "{} -> (Pesso: {}; Importância: {})",
+                &item.name, item.weight, item.value
+            ))
+        })
+        .collect::<Vec<ListItem>>();
+
+    let list = List::new(items)
+        .block(Block::bordered().title("Itens"))
+        .style(Style::new().white())
+        .direction(ListDirection::TopToBottom);
+
+    frame.render_widget(list, outer_layout[1]);
 
     let info_text = format!(
         " Items: {} | Capacity: {} | Press any key to exit ",
@@ -58,5 +82,5 @@ pub fn render_table(frame: &mut Frame, table: &Table) {
         ))
         .style(Style::default().bg(Color::Black));
 
-    frame.render_widget(footer, outer_layout[1]);
+    frame.render_widget(footer, outer_layout[2]);
 }

@@ -1,4 +1,4 @@
-use emergency_backpack::{algorithms::dynamic_programming, backpack::Item, ui::render_table};
+use emergency_backpack::{algorithms::dynamic_programming, backpack::Item, ui::render_backpack};
 use ratatui::DefaultTerminal;
 
 const BACKPACK_CAPACITY: u16 = 6;
@@ -21,7 +21,7 @@ fn app(terminal: &mut DefaultTerminal) -> std::io::Result<()> {
     let backpack = dynamic_programming(&items, BACKPACK_CAPACITY);
 
     loop {
-        terminal.draw(|frame| render_table(frame, &backpack.table))?;
+        terminal.draw(|frame| render_backpack(frame, &backpack))?;
         if crossterm::event::read()?.is_key_press() {
             break Ok(());
         }
