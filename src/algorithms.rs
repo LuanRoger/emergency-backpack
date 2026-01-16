@@ -61,3 +61,18 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
 
     Backpack::new(capacity, backpack_items, table)
 }
+
+#[macro_export]
+macro_rules! default_dp_exec {
+    ( $x:expr $(,)? ) => {{
+        let items = vec![
+            $crate::backpack::Item::new(String::from("Caderno"), 3, 2),
+            $crate::backpack::Item::new(String::from("Livro"), 4, 3),
+            $crate::backpack::Item::new(String::from("Caneca"), 5, 4),
+            $crate::backpack::Item::new(String::from("Caneta"), 1, 1),
+            $crate::backpack::Item::new(String::from("Garrafa"), 2, 2),
+        ];
+
+        $crate::algorithms::dynamic_programming(&items, $x)
+    }};
+}
