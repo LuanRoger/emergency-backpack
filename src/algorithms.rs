@@ -1,4 +1,4 @@
-use crate::backpack::{Item, Backpack};
+use crate::backpack::{Backpack, Item};
 use crate::table::init_table;
 
 pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
@@ -41,7 +41,7 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
     }
 
     // Retrocede pela tabela para encontrar quais itens foram selecionados
-    let mut knapsack = Backpack::new(capacity);
+    let mut backpack_items = Vec::new();
     let mut row = rows; // Começa no último item
     let mut col = columns; // Começa na capacidade total
 
@@ -49,7 +49,7 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
         // Se o valor mudou da linha anterior, este item foi incluído
         if table[row][col] != table[row - 1][col] {
             let current_item = &items[row - 1];
-            knapsack.add_item(current_item.clone());
+            backpack_items.push(current_item.clone());
 
             // Reduz a capacidade restante pelo peso deste item
             col -= current_item.weight as usize;
@@ -59,5 +59,5 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
         row -= 1;
     }
 
-    knapsack
+    Backpack::new(capacity, backpack_items, table)
 }

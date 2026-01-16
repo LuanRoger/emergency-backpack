@@ -1,8 +1,15 @@
-use emergency_backpack::{algorithms::dynamic_programming, backpack::Item};
+use emergency_backpack::{algorithms::dynamic_programming, backpack::Item, ui::render_table};
+use ratatui::DefaultTerminal;
 
 const BACKPACK_CAPACITY: u16 = 6;
 
-fn main() {
+fn main() -> color_eyre::Result<()> {
+    color_eyre::install()?;
+    ratatui::run(app)?;
+    Ok(())
+}
+
+fn app(terminal: &mut DefaultTerminal) -> std::io::Result<()> {
     let items = vec![
         Item::new(String::from("Caderno"), 3, 2),
         Item::new(String::from("Livro"), 4, 3),
@@ -12,5 +19,11 @@ fn main() {
     ];
 
     let backpack = dynamic_programming(&items, BACKPACK_CAPACITY);
-    println!("{}", backpack);
+
+    loop {
+        terminal.draw(|frame| render_table(frame, &backpack.table))?;
+        if crossterm::event::read()?.is_key_press() {
+            break Ok(());
+        }
+    }
 }

@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use crate::table::Table;
+
 pub struct Item {
     pub name: String,
     pub weight: u16,
@@ -9,13 +11,15 @@ pub struct Item {
 pub struct Backpack {
     pub items: Vec<Item>,
     pub capacity: u16,
+    pub table: Table,
 }
 
 impl Backpack {
-    pub fn new(capacity: u16) -> Self {
+    pub fn new(capacity: u16, items: Vec<Item>, table: Table) -> Self {
         Backpack {
-            items: Vec::new(),
+            items,
             capacity,
+            table,
         }
     }
 
