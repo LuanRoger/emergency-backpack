@@ -6,34 +6,46 @@ use ratatui::{
     widgets::{Block, Borders, List, ListDirection, ListItem, Padding, Row, Table as TableUi},
 };
 
-use crate::backpack::Backpack;
-use crate::default_dp_exec;
+use crate::{backpack::Backpack, default_dp_exec};
 
 fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
     let outer_layout = Layout::default()
         .direction(Direction::Vertical)
         .margin(0)
         .constraints([
-            Constraint::Fill(3),
+            Constraint::Fill(4),
             Constraint::Fill(2),
             Constraint::Length(1),
         ])
         .split(frame.area());
 
     let table = &backpack.table;
-    let num_columns = table.first().map(|row| row.len()).unwrap_or(0);
-    let num_rows = table.len();
+    let items = &backpack.items;
+    let num_columns = backpack.capacity;
 
     let rows: Vec<Row> = table
         .iter()
-        .map(|row| {
-            let cells: Vec<String> = row.iter().map(|col| format!("{:>4}", col)).collect();
+        .enumerate()
+        .map(|(row_idx, row)| {
+            let item_name = if row_idx == 0 {
+                String::from("(base)")
+            } else if row_idx <= items.len() {
+                items[row_idx - 1].name.clone()
+            } else {
+                String::from("")
+            };
+
+            let mut cells: Vec<String> = vec![format!("{:<12}", item_name)];
+            cells.extend(row.iter().map(|col| format!("{:>4}", col)));
             Row::new(cells).style(Style::default()).height(2)
         })
         .collect();
 
-    let widths: Vec<Constraint> = (0..num_columns).map(|_| Constraint::Length(8)).collect();
-    let header_labels: Vec<String> = (0..num_columns).map(|i| format!("W:{}", i)).collect();
+    let mut widths: Vec<Constraint> = vec![Constraint::Length(14)];
+    widths.extend((0..num_columns).map(|_| Constraint::Length(8)));
+
+    let mut header_labels: Vec<String> = vec![String::from("Item")];
+    header_labels.extend((0..num_columns).map(|i| format!("W:{}", i)));
 
     let header = Row::new(header_labels)
         .style(Style::default().bold().underlined())
@@ -52,7 +64,7 @@ fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
 
     frame.render_widget(table_widget, outer_layout[0]);
 
-    let items = backpack
+    let items_list = backpack
         .items
         .iter()
         .map(|item| {
@@ -63,7 +75,7 @@ fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
         })
         .collect::<Vec<ListItem>>();
 
-    let list = List::new(items)
+    let list = List::new(items_list)
         .block(Block::bordered().title("Itens"))
         .style(Style::new().white())
         .direction(ListDirection::TopToBottom);
@@ -71,8 +83,8 @@ fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
     frame.render_widget(list, outer_layout[1]);
 
     let info_text = format!(
-        " Items: {} | Capacity: {} | Press any key to exit ",
-        num_rows.saturating_sub(1),
+        " Items: {} | Capacity: {} | Aperte qualquer tecla para sair ",
+        items.len(),
         num_columns.saturating_sub(1)
     );
 
