@@ -66,11 +66,11 @@ pub fn dynamic_programming(items: &Vec<Item>, capacity: u16) -> Backpack {
 macro_rules! default_dp_exec {
     ( $x:expr $(,)? ) => {{
         let items = vec![
-            $crate::backpack::Item::new(String::from("Caderno"), 3, 2),
-            $crate::backpack::Item::new(String::from("Livro"), 4, 3),
-            $crate::backpack::Item::new(String::from("Caneca"), 5, 4),
-            $crate::backpack::Item::new(String::from("Caneta"), 1, 1),
-            $crate::backpack::Item::new(String::from("Garrafa"), 2, 2),
+            $crate::backpack::Item::new(String::from("Água (2L)"), 4, 10),
+            $crate::backpack::Item::new(String::from("Kit de Primeiros Socorros"), 3, 9),
+            $crate::backpack::Item::new(String::from("Faca / Canivete"), 1, 6),
+            $crate::backpack::Item::new(String::from("Mapa e Bússola"), 1, 3),
+            $crate::backpack::Item::new(String::from("Canivete Suíço"), 1, 6),
         ];
 
         $crate::algorithms::dynamic_programming(&items, $x)

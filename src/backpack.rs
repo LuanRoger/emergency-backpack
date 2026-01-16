@@ -72,8 +72,8 @@ impl Clone for Item {
     fn clone(&self) -> Self {
         Self {
             name: self.name.clone(),
-            weight: self.weight.clone(),
-            value: self.value.clone(),
+            weight: self.weight,
+            value: self.value,
         }
     }
 }

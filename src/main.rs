@@ -3,7 +3,7 @@ use emergency_backpack::{
     cli::{cli, get_args},
 };
 
-const BACKPACK_CAPACITY: u16 = 6;
+const BACKPACK_CAPACITY: u16 = 10;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
