@@ -1,5 +1,5 @@
 use ratatui::{
-    Frame,
+    DefaultTerminal, Frame,
     layout::{Constraint, Direction, Layout},
     style::{Color, Style},
     text::Span,
@@ -7,8 +7,9 @@ use ratatui::{
 };
 
 use crate::backpack::Backpack;
+use crate::default_dp_exec;
 
-pub fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
+fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
     let outer_layout = Layout::default()
         .direction(Direction::Vertical)
         .margin(0)
@@ -83,4 +84,15 @@ pub fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
         .style(Style::default().bg(Color::Black));
 
     frame.render_widget(footer, outer_layout[2]);
+}
+
+pub fn app(terminal: &mut DefaultTerminal, capacity: u16) -> std::io::Result<()> {
+    let backpack = default_dp_exec!(capacity);
+
+    loop {
+        terminal.draw(|frame| render_backpack(frame, &backpack))?;
+        if crossterm::event::read()?.is_key_press() {
+            break Ok(());
+        }
+    }
 }
