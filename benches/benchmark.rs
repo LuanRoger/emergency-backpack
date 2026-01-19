@@ -206,6 +206,42 @@ fn bench_emergency_scenario(c: &mut Criterion) {
     });
 }
 
+/// Extreme dataset - 1000 items, capacity 1000
+fn bench_extreme_1000_items(c: &mut Criterion) {
+    let items: Vec<Item> = (0..1000)
+        .map(|i| {
+            Item::new(
+                format!("Item_{}", i),
+                (i % 50 + 1) as u16,  // weight: 1-50
+                (i % 100 + 1) as u16, // value: 1-100
+            )
+        })
+        .collect();
+    let capacity = 1000;
+
+    c.bench_function("dp_extreme_1000_items", |b| {
+        b.iter(|| dynamic_programming(black_box(&items), black_box(capacity)))
+    });
+}
+
+/// Huge dataset - 5000 items, capacity 500 (lower capacity to keep runtime reasonable)
+fn bench_huge_5000_items(c: &mut Criterion) {
+    let items: Vec<Item> = (0..5000)
+        .map(|i| {
+            Item::new(
+                format!("Item_{}", i),
+                (i % 30 + 1) as u16, // weight: 1-30
+                (i % 80 + 1) as u16, // value: 1-80
+            )
+        })
+        .collect();
+    let capacity = 500;
+
+    c.bench_function("dp_huge_5000_items", |b| {
+        b.iter(|| dynamic_programming(black_box(&items), black_box(capacity)))
+    });
+}
+
 criterion_group!(
     benches,
     bench_small_dataset,
@@ -218,6 +254,8 @@ criterion_group!(
     bench_light_items,
     bench_uniform_items,
     bench_emergency_scenario,
+    bench_extreme_1000_items,
+    bench_huge_5000_items,
 );
 
 criterion_main!(benches);
