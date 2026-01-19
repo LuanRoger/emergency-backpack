@@ -42,10 +42,10 @@ fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
         .collect();
 
     let mut widths: Vec<Constraint> = vec![Constraint::Length(14)];
-    widths.extend((0..num_columns).map(|_| Constraint::Length(8)));
+    widths.extend((0..=num_columns).map(|_| Constraint::Length(8)));
 
     let mut header_labels: Vec<String> = vec![String::from("Item")];
-    header_labels.extend((0..num_columns).map(|i| format!("W:{}", i)));
+    header_labels.extend((0..=num_columns).map(|i| format!("W:{}", i)));
 
     let header = Row::new(header_labels)
         .style(Style::default().bold().underlined())
@@ -59,7 +59,7 @@ fn render_backpack(frame: &mut Frame, backpack: &Backpack) {
     let table_widget = TableUi::new(rows, widths)
         .header(header)
         .block(block)
-        .column_spacing(5)
+        .column_spacing(1)
         .style(Style::default().fg(Color::White));
 
     frame.render_widget(table_widget, outer_layout[0]);
